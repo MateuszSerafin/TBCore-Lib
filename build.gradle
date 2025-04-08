@@ -1,0 +1,28 @@
+plugins {
+    id("java")
+    id("maven-publish")
+}
+
+group = "pl.tbcore.lib"
+version = "1.0.0"
+
+java {
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly("com.google.code.gson:gson:2.8.2")
+    compileOnly("org.apache.logging.log4j:log4j-core:2.16.0")
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java  // Publishes the JAR and POM generated from the Java plugin
+        }
+    }
+}
