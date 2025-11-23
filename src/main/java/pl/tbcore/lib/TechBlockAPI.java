@@ -2,10 +2,7 @@ package pl.tbcore.lib;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.*;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.URI;
@@ -61,6 +58,13 @@ public class TechBlockAPI {
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, trustManagers, new SecureRandom());
         HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+        //Cert is generated without domain name for some reason
+        con.setHostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String s, SSLSession sslSession) {
+                return true;
+            }
+        });
         con.setSSLSocketFactory(sslContext.getSocketFactory());
         return con;
     }
